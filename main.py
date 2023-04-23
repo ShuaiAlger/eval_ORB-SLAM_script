@@ -64,9 +64,21 @@ def run():
     vocabulary_path = "./Vocabulary/ORBvoc.txt"
     dataset_name = "EuRoC"
 
+    method = 2
 
-    method_name = "Monocular-Inertial"   #  "Monocular", "Monocular-Inertial", "Stereo", "Stereo-Inertial"
-    program_name = "mono_inertial_euroc" #  "mono_euroc", "mono_inertial_euroc", "stereo_euroc", "stereo_inertial_euroc"
+    if method == 0:
+        method_name = "Monocular"
+        program_name = "mono_euroc"
+    elif method == 1:
+        method_name = "Monocular-Inertial"
+        program_name = "mono_inertial_euroc"
+    elif method == 2:
+        method_name = "Stereo"
+        program_name = "stereo_euroc"
+    elif method == 3:
+        method_name = "Stereo-Inertial"
+        program_name = "stereo_inertial_euroc"
+
 
 
     seq_name = "MH_03_medium"
