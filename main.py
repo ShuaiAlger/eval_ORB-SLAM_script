@@ -3,7 +3,7 @@ import os
 
 
 
-pipeline_list = [   "Monocular",
+method_list = [   "Monocular",
                     "Monocular-Inertial",
                     "Stereo",
                     "Stereo-Inertial",
@@ -60,28 +60,28 @@ def mkdir_wcheck(_dir):
 
 
 
-def run():
+def run(method_id, seq_id):
     vocabulary_path = "./Vocabulary/ORBvoc.txt"
     dataset_name = "EuRoC"
 
-    method = 2
+    
 
-    if method == 0:
+    if method_id == 0:
         method_name = "Monocular"
         program_name = "mono_euroc"
-    elif method == 1:
+    elif method_id == 1:
         method_name = "Monocular-Inertial"
         program_name = "mono_inertial_euroc"
-    elif method == 2:
+    elif method_id == 2:
         method_name = "Stereo"
         program_name = "stereo_euroc"
-    elif method == 3:
+    elif method_id == 3:
         method_name = "Stereo-Inertial"
         program_name = "stereo_inertial_euroc"
 
 
 
-    seq_name = "MH_03_medium"
+    seq_name = data_seqs_list[seq_id]
     seq_index = data_seqs_list.index(seq_name)
     simple_seq_name = data_seqs_list_v2[seq_index]
 
@@ -122,17 +122,46 @@ def run():
 
 
 
-def eval():
+def eval(method_id, seq_id):
+    dataset_name = "EuRoC"
+
+    
+
+    if method_id == 0:
+        method_name = "Monocular"
+        program_name = "mono_euroc"
+    elif method_id == 1:
+        method_name = "Monocular-Inertial"
+        program_name = "mono_inertial_euroc"
+    elif method_id == 2:
+        method_name = "Stereo"
+        program_name = "stereo_euroc"
+    elif method_id == 3:
+        method_name = "Stereo-Inertial"
+        program_name = "stereo_inertial_euroc"
+
+
+    seq_name = seq_name = data_seqs_list[seq_id]
+    seq_index = data_seqs_list.index(seq_name)
+    simple_seq_name = data_seqs_list_v2[seq_index]
+
+    filename1 = "CameraTrajectory.txt"
+    filename2 = "KeyFrameTrajectory.txt"
+
+    save_root_dir = "results"
+    save_dir = save_root_dir+"/"+dataset_name+"/"+seq_name+"/"+method_name
+
     program_path = "python ./evaluation/evaluate_ate_scale.py"
 
-    gt_file = './evaluation/Ground_truth/EuRoC_left_cam/MH03_GT.txt'
+    gt_file = "./evaluation/Ground_truth/EuRoC_left_cam/" + simple_seq_name + "_GT.txt"
 
-    result_file = './MH03/svio/CameraTrajectory.txt'
+    result_file = save_dir + "/" + "CameraTrajectory.txt"
 
     command = program_path+" "+gt_file+" "+result_file
 
-    print("COMMAND:\n", command)
+    # print("COMMAND:\n", command)
 
+    print("EVAL --->  " + method_name)
     os.system(command)
 
 
@@ -142,10 +171,12 @@ def eval():
 
 if __name__ == '__main__':
 
+    for i in range(len(data_seqs_list)):
+        for m in range(len(method_list)):
+            run(m, i)
 
-    run()
-
-    # eval()
-
+    for i in range(len(data_seqs_list)):
+        for m in range(len(method_list)):
+            eval(m, i)
 
 
